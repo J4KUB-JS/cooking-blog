@@ -13,8 +13,22 @@ class UserController extends Controller
         return view('home',
         [
             'latest_recipes' => Post::limit(10)->get()
-        ]
-        );
+        ]);
+    }
+
+    public function apiIndex(){
+        $getAll = request('all');
+        if($getAll === true){
+            return [
+                'count' => sizeof(Post::all()),
+                'latest_recipes' => Post::all()
+            ];
+        }else{
+            return [
+                'count' => sizeof(Post::limit(10)->get()),
+                'latest_recipes' => Post::limit(10)->get()
+            ];
+        }
     }
     
     public function search(Request $request){
@@ -24,6 +38,14 @@ class UserController extends Controller
             'latest_recipes' => Post::where('title', 'LIKE', '%'.$request['searchPhrase'].'%')->limit(10)->get()
         ]
         );
+    }
+
+    public function apiSearch(){
+        $temp = Post::where('title', 'LIKE', '%'.request('searchPhrase').'%')->limit(10)->get();
+        return [
+            'count' => sizeof($temp),
+            'recipes' => $temp
+        ];
     }
 
     public function getRecipe($postID){
@@ -40,10 +62,29 @@ class UserController extends Controller
             ];
         }
 
-        // dd($recipes);
         return view('post', [
             'post' => $post,
             'recipes' => $recipes,
         ]);
+    }
+
+    public function apiGetRecipe($postID){
+        $post = Post::where('id', $postID)->with('recipes')->get()->first();
+
+        $recipes = [];
+
+        foreach($post->recipes as $recipe){
+            $ingredients = explode('-', $recipe->ingredients);
+            unset($ingredients[0]);
+            $recipes[] = [
+                'title' => $recipe->title,
+                'ingredients' => $ingredients
+            ];
+        }
+
+        return [
+            'post' => $post,
+            'recipes' => $recipes,
+        ];
     }
 }

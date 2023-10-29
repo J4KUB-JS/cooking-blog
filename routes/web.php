@@ -28,3 +28,8 @@ Route::post('/processAdd', [AdminController::class, 'processAdd'])->middleware('
 Route::get('/editPage/{postID}', [AdminController::class, 'editPage'])->middleware('auth');
 Route::post('/processEdit', [AdminController::class, 'processEdit'])->middleware('auth');
 Route::get('/remove/{postID}', [AdminController::class, 'remove'])->middleware('auth');
+
+// --- API Routes ---
+Route::get('api/', [UserController::class, 'apiIndex']);
+Route::get('api/recipe/{postID}', [UserController::class, 'apiGetRecipe']);
+Route::get('api/search', [UserController::class, 'apiSearch']);

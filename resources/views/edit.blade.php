@@ -11,7 +11,7 @@
       <div>
         <h3>Post Data</h3>
         <label for="title">Title</label>
-        <input value="{{$post->title}} style="display: block" name="title" id="title">
+        <input value="{{$post->title}}" style="display: block" name="title" id="title">
         <input value="{{$post->id}}" name="postId" id="postId" type="hidden">
 
         <label for="textBody">textBody</label>
