@@ -18,15 +18,16 @@ class UserController extends Controller
 
     public function apiIndex(){
         $getAll = request('all');
-        if($getAll === true){
+        if($getAll == 1){
+            error_log($getAll);
             return [
                 'count' => sizeof(Post::all()),
                 'latest_recipes' => Post::all()
             ];
         }else{
             return [
-                'count' => sizeof(Post::limit(10)->get()),
-                'latest_recipes' => Post::limit(10)->get()
+                'count' => sizeof(Post::paginate(10)),
+                'latest_recipes' => Post::paginate(10)
             ];
         }
     }
