@@ -19,7 +19,6 @@ class UserController extends Controller
     public function apiIndex(){
         $getAll = request('all');
         if($getAll == 1){
-            error_log($getAll);
             return [
                 'count' => sizeof(Post::all()),
                 'latest_recipes' => Post::all()
